@@ -17,7 +17,4 @@ public class DiffieHellman {
         return new Key(p, g);
     }
 
-
-
-
 }
