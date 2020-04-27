@@ -16,16 +16,12 @@ public class MathUtil {
         return prime;
     }
 
-    public static int nextPrime() {
-        return nextPrime(Integer.MAX_VALUE);
+    public static int nextInt(int max) {
+        return RANDOM.nextInt() % max;
     }
 
     public static int nextInt() {
         return nextInt(Integer.MAX_VALUE);
-    }
-
-    public static int nextInt(int max) {
-        return RANDOM.nextInt() % max;
     }
 
     public static boolean isPrime(int number) {
