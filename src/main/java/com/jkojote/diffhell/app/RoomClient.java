@@ -2,7 +2,6 @@ package com.jkojote.diffhell.app;
 
 
 import com.jkojote.diffhell.Key;
-import com.jkojote.diffhell.MathUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +25,8 @@ public class RoomClient {
 
     public Connection connect() throws IOException {
         var socket = new Socket(host, port);
+        log("Connected to the server");
+
         var in = socket.getInputStream();
         var out = socket.getOutputStream();
 
@@ -36,21 +37,39 @@ public class RoomClient {
         sendPublicNumber(out, publicNumber);
         var desKey = modExp(roomPublicNumber, privateNumber, publicKey.getP());
 
+        waitForApproval(in);
         return new Connection(socket, in, out, desKey);
     }
 
     private Key readPublicKey(InputStream in) throws IOException {
+        log("Reading public key");
+
         var g = readInt(in);
         var p = readInt(in);
         return new Key(g, p);
     }
 
     private long readRoomPublicNumber(InputStream in) throws IOException {
+        log("Reading public number");
+
         return readLong(in);
     }
 
     private void sendPublicNumber(OutputStream out, long publicNumber) throws IOException {
+        log("Sending public number");
+
         writeLong(out, publicNumber);
     }
 
+    private void waitForApproval(InputStream in) throws IOException {
+        log("Waiting for approval...");
+
+        if (readInt(in) == 1) {
+            log("Approved. Connection established");
+        }
+    }
+
+    private static void log(String message) {
+        System.out.println("[CLIENT]: " + message);
+    }
 }

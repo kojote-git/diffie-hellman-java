@@ -54,8 +54,13 @@ public class Connection {
         var in = new BufferedReader(this.in);
 
         while (true) {
-            var message = DES.decryptString(in.readLine(), desKey);
-            notifyMessageReceived(message);
+            var message = in.readLine();
+
+            if (message == null) {
+                return;
+            }
+
+            notifyMessageReceived(DES.decryptString(message, desKey));
         }
     }
 
@@ -67,7 +72,7 @@ public class Connection {
 
     public void sendMessage(String message) throws IOException {
         if (isClosed()) {
-            throw new IllegalStateException("cannot use closed connection");
+            throw new IOException("Connection is closed");
         }
 
         var encryptedMessage = DES.encryptString(message, desKey);

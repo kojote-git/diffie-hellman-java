@@ -287,8 +287,6 @@ public class Des {
             long prevLeft = left;
             left = right;
             right = prevLeft ^ f(right, keys[i]);
-
-            logEntropyOfOne(i, (left << 32) | right);
         }
 
         return doFinalPermutation((left << 32) | right);
@@ -305,16 +303,9 @@ public class Des {
             long prevRight = right;
             right = left;
             left = prevRight ^ f(left, keys[15 - i]);
-
-            logEntropyOfOne(i, (left << 32) | right);
         }
 
         return doFinalPermutation((left << 32) | right);
-    }
-
-    private void logEntropyOfOne(int round, long block) {
-        double entropy = calculateEntropyOfOne(block);
-        System.out.println("round " + round + " entropy: " + entropy);
     }
 
     private double calculateEntropyOfOne(long block) {

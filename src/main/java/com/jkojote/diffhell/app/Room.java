@@ -1,7 +1,6 @@
 package com.jkojote.diffhell.app;
 
 import com.jkojote.diffhell.Key;
-import com.jkojote.diffhell.MathUtil;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -13,8 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import static com.jkojote.diffhell.MathUtil.modExp;
+import static com.jkojote.diffhell.MathUtil.nextInt;
 import static com.jkojote.diffhell.StreamUtil.readLong;
 import static com.jkojote.diffhell.StreamUtil.writeInt;
+import static java.lang.Math.abs;
 
 
 public class Room implements Closeable {
@@ -22,7 +24,7 @@ public class Room implements Closeable {
     private List<Connection> connections;
     private ServerSocket serverSocket;
 
-    private Room(Key key, int port) throws IOException {
+    public Room(Key key, int port) throws IOException {
         this.key = key;
         this.connections = new ArrayList<>();
         this.serverSocket = new ServerSocket(port);
@@ -34,10 +36,11 @@ public class Room implements Closeable {
             try {
                 socket = serverSocket.accept();
 
-                log("Received new connection");
+                log("Received a new connection");
 
                 acceptConnection(socket);
             } catch (IOException ignore) {
+                log("Connection lost");
                 if (socket != null) {
                     try {
                         socket.close();
@@ -52,14 +55,15 @@ public class Room implements Closeable {
         var in = socket.getInputStream();
         var out = socket.getOutputStream();
 
-        var privateNumber = MathUtil.nextInt();
-        var publicNumber = MathUtil.modExp(key.getG(), privateNumber, key.getP());
+        var privateNumber = abs(nextInt());
+        var publicNumber = modExp(key.getG(), privateNumber, key.getP());
         sendPublicKey(out);
         sendPublicNumber(out, publicNumber);
         var clientPublicKey = readClientPublicNumber(in);
-        var desKey = MathUtil.modExp(clientPublicKey, privateNumber, key.getP());
-        var connection = new Connection(socket, in, out, desKey);
+        var desKey = modExp(clientPublicKey, privateNumber, key.getP());
+        approveConnection(out);
 
+        var connection = new Connection(socket, in, out, desKey);
         addConnection(connection);
         connection.onMessageReceived(message -> broadcastMessage(connection, message));
     }
@@ -69,7 +73,6 @@ public class Room implements Closeable {
 
         writeInt(out, key.getG());
         writeInt(out, key.getP());
-        out.write('\n');
     }
 
     private void sendPublicNumber(OutputStream out, long publicNumber) throws IOException {
@@ -80,7 +83,15 @@ public class Room implements Closeable {
     }
 
     private long readClientPublicNumber(InputStream in) throws IOException {
+        log("Reading client public number...");
+
         return readLong(in);
+    }
+
+    private void approveConnection(OutputStream out) throws IOException {
+        log("Approving connection...");
+
+        writeInt(out, 1);
     }
 
     private void broadcastMessage(Connection sender, String message) {
@@ -120,7 +131,7 @@ public class Room implements Closeable {
     }
 
     private void log(String message) {
-        System.out.println(message);
+        System.out.println("[ROOM]: " + message);
     }
 
     @Override
