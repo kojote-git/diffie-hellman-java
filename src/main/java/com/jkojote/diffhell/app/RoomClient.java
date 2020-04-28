@@ -13,6 +13,7 @@ import static com.jkojote.diffhell.MathUtil.nextInt;
 import static com.jkojote.diffhell.StreamUtil.readInt;
 import static com.jkojote.diffhell.StreamUtil.readLong;
 import static com.jkojote.diffhell.StreamUtil.writeLong;
+import static java.lang.Math.abs;
 
 public class RoomClient {
     private final String host;
@@ -32,7 +33,7 @@ public class RoomClient {
 
         var publicKey = readPublicKey(in);
         var roomPublicNumber = readRoomPublicNumber(in);
-        var privateNumber = nextInt();
+        var privateNumber = abs(nextInt(0xFFFF));
         var publicNumber = modExp(publicKey.getG(), privateNumber, publicKey.getP());
         sendPublicNumber(out, publicNumber);
         var desKey = modExp(roomPublicNumber, privateNumber, publicKey.getP());
@@ -46,7 +47,7 @@ public class RoomClient {
 
         var g = readInt(in);
         var p = readInt(in);
-        return new Key(g, p);
+        return new Key(p, g);
     }
 
     private long readRoomPublicNumber(InputStream in) throws IOException {

@@ -30,7 +30,9 @@ public class Room implements Closeable {
         this.serverSocket = new ServerSocket(port);
     }
 
-    public void start() throws IOException {
+    public void start() {
+        log("Starting the room");
+
         while (true) {
             Socket socket = null;
             try {
@@ -55,7 +57,7 @@ public class Room implements Closeable {
         var in = socket.getInputStream();
         var out = socket.getOutputStream();
 
-        var privateNumber = abs(nextInt());
+        var privateNumber = abs(nextInt(0xFFFF));
         var publicNumber = modExp(key.getG(), privateNumber, key.getP());
         sendPublicKey(out);
         sendPublicNumber(out, publicNumber);
@@ -99,7 +101,7 @@ public class Room implements Closeable {
 
         for (var connection : new ArrayList<>(connections)) {
             if (!connection.equals(sender)) {
-                sendMessageTo(sender, message);
+                sendMessageTo(connection, message);
             }
         }
     }
@@ -114,7 +116,6 @@ public class Room implements Closeable {
         try {
             connection.sendMessage(message);
         } catch (IOException e) {
-            log("Failed to send message");
             removeConnection(connection);
 
             try {

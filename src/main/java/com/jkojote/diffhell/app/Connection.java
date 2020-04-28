@@ -78,6 +78,7 @@ public class Connection {
         var encryptedMessage = DES.encryptString(message, desKey);
         out.write(encryptedMessage);
         out.write("\n");
+        out.flush();
     }
 
     public void onMessageReceived(Consumer<String> callback) {

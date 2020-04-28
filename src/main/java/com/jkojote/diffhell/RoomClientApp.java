@@ -5,7 +5,7 @@ import com.jkojote.diffhell.app.RoomClient;
 import java.io.IOException;
 
 public class RoomClientApp {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         var client = new RoomClient("localhost", 8080);
         var connection = client.connect();
 
