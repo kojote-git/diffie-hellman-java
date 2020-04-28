@@ -1,4 +1,4 @@
-package com.jkojote.diffhell;
+package com.jkojote.diffhell.security;
 
 import java.nio.charset.Charset;
 import java.security.SecureRandom;

@@ -1,6 +1,7 @@
-package com.jkojote.diffhell.app;
+package com.jkojote.diffhell.room;
 
-import com.jkojote.diffhell.Key;
+import com.jkojote.diffhell.Connection;
+import com.jkojote.diffhell.security.Key;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -12,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import static com.jkojote.diffhell.MathUtil.modExp;
-import static com.jkojote.diffhell.MathUtil.nextInt;
-import static com.jkojote.diffhell.StreamUtil.readLong;
-import static com.jkojote.diffhell.StreamUtil.writeInt;
+import static com.jkojote.diffhell.util.MathUtil.modExp;
+import static com.jkojote.diffhell.util.MathUtil.nextInt;
+import static com.jkojote.diffhell.util.StreamUtil.readLong;
+import static com.jkojote.diffhell.util.StreamUtil.writeInt;
 import static java.lang.Math.abs;
 
 
@@ -71,27 +72,27 @@ public class Room implements Closeable {
     }
 
     private void sendPublicKey(OutputStream out) throws IOException {
-        log("Sending public key...");
+        log("Sending public key");
 
         writeInt(out, key.getG());
         writeInt(out, key.getP());
     }
 
     private void sendPublicNumber(OutputStream out, long publicNumber) throws IOException {
-        log("Sending public number...");
+        log("Sending public number");
 
         writeInt(out, (int) (publicNumber));
         writeInt(out, (int) (publicNumber >>> 32));
     }
 
     private long readClientPublicNumber(InputStream in) throws IOException {
-        log("Reading client public number...");
+        log("Reading client public number");
 
         return readLong(in);
     }
 
     private void approveConnection(OutputStream out) throws IOException {
-        log("Approving connection...");
+        log("Approving connection");
 
         writeInt(out, 1);
     }

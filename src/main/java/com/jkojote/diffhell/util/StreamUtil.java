@@ -1,4 +1,4 @@
-package com.jkojote.diffhell;
+package com.jkojote.diffhell.util;
 
 import java.io.IOException;
 import java.io.InputStream;

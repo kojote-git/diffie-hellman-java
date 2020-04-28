@@ -1,7 +1,7 @@
-package com.jkojote.diffhell;
+package com.jkojote.diffhell.security;
 
-import static com.jkojote.diffhell.MathUtil.findPrimitiveRoot;
-import static com.jkojote.diffhell.MathUtil.nextPrime;
+import static com.jkojote.diffhell.util.MathUtil.findPrimitiveRoot;
+import static com.jkojote.diffhell.util.MathUtil.nextPrime;
 
 public class DiffieHellman {
 

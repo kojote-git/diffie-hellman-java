@@ -1,4 +1,4 @@
-package com.jkojote.diffhell;
+package com.jkojote.diffhell.security;
 
 public class Key {
     private int p;

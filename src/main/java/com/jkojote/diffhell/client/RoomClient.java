@@ -1,18 +1,19 @@
-package com.jkojote.diffhell.app;
+package com.jkojote.diffhell.client;
 
 
-import com.jkojote.diffhell.Key;
+import com.jkojote.diffhell.Connection;
+import com.jkojote.diffhell.security.Key;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import static com.jkojote.diffhell.MathUtil.modExp;
-import static com.jkojote.diffhell.MathUtil.nextInt;
-import static com.jkojote.diffhell.StreamUtil.readInt;
-import static com.jkojote.diffhell.StreamUtil.readLong;
-import static com.jkojote.diffhell.StreamUtil.writeLong;
+import static com.jkojote.diffhell.util.MathUtil.modExp;
+import static com.jkojote.diffhell.util.MathUtil.nextInt;
+import static com.jkojote.diffhell.util.StreamUtil.readInt;
+import static com.jkojote.diffhell.util.StreamUtil.readLong;
+import static com.jkojote.diffhell.util.StreamUtil.writeLong;
 import static java.lang.Math.abs;
 
 public class RoomClient {

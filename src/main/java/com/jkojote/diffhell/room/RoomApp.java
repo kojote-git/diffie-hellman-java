@@ -1,6 +1,6 @@
-package com.jkojote.diffhell;
+package com.jkojote.diffhell.room;
 
-import com.jkojote.diffhell.app.Room;
+import com.jkojote.diffhell.security.DiffieHellman;
 
 import java.io.IOException;
 
