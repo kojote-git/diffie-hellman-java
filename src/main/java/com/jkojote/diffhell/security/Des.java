@@ -5,17 +5,6 @@ import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
 
-/**
- * Implementation of DES algorithm.
- *
- * Caution for readers. Keep in mind one important detail:
- *
- * It seems that standard DES implementation assumes
- * that you read bits in a number from left to right.
- * It effectively means that the most significant bit
- * is on the position 0 rather than 63 (fuck) which kills readability.
- *
- */
 public class Des {
     private static final int[] INITIAL_PERMUTATION = {
         58, 50, 42, 34, 26, 18, 10, 2,
@@ -444,6 +433,6 @@ public class Des {
         } else if (bit == 0) {
             return block & (~(1L << position));
         }
-        throw new RuntimeException("fuck off");
+        throw new IllegalArgumentException("Invalid value of the bit: " + bit + ". Expected 0 or 1");
     }
 }
